@@ -16,7 +16,7 @@ export default function TodosInput() {
       <input
         type="text"
         placeholder="Insira uma nova Tarefa"
-        value={todo.name}
+        value={todo}
         onChange={(e) => {
           setTodo(e.target.value);
         }}

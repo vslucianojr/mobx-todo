@@ -11,11 +11,14 @@ const StoreProvider = ({ children }) => {
     addTodo: (todo) => {
       store.todos.push(todo);
     },
-    toggle() {
-      store.done = !store.done;
+    toggle(todo) {
+      todo.done = !todo.done;
     },
     get todosCount() {
       return store.todos.length;
+    },
+    get todosNotDone() {
+      return store.todos.filter((todo) => todo.done === false).length;
     },
   }));
 
@@ -24,15 +27,39 @@ const StoreProvider = ({ children }) => {
   );
 };
 
-const Todos = () => {
+const Todos = ({ code }) => {
   const store = React.useContext(StoreContext);
 
   return useObserver(() => (
-    <ul>
-      {store.todos.map((todo) => (
-        <li style={{ color: "white" }} key={todo}>
-          {todo.name}
-        </li>
+    <ul code={code}>
+      {store.todos.map((todo, index) => (
+        <div
+          key={index}
+          code={code}
+          style={{
+            listStyleType: "none",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <li style={{ color: "white" }}>
+            {todo.done ? (
+              <h3>
+                <s>{todo.name}</s>
+              </h3>
+            ) : (
+              <h3>{todo.name}</h3>
+            )}
+          </li>
+          <button
+            style={{ marginLeft: "8px", maxHeight: 30 }}
+            onClick={() => store.toggle(todo)}
+          >
+            {todo.done ? "Desfazer" : "Concluir"}
+          </button>
+        </div>
       ))}
     </ul>
   ));
@@ -43,7 +70,7 @@ export default function TodoList() {
     <StoreProvider>
       <div>
         <TodosHeader />
-        <Todos />
+        <Todos code={"TodosList"} />
         <TodosInput />
       </div>
     </StoreProvider>
