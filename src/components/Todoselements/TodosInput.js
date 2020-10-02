@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StoreContext } from "../TodoList";
+import { StoreContext } from "../TodoList/TodosStore";
 
 export default function TodosInput() {
   const store = useContext(StoreContext);
